@@ -11,6 +11,3 @@
 //TODO 4 Controller für die Benutzer implementieren.
 //TODO 5 Methode zum Annehmen von Benutzernalagen implementieren.
 
-
-//cftziodfxzoidz
-//arsch

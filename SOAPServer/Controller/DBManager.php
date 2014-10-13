@@ -8,7 +8,7 @@
 namespace Controller;
 
 class DBManager {
-http://framework.zend.com/manual/1.12/de/zend.db.adapter.html -> learn.
+//http://framework.zend.com/manual/1.12/de/zend.db.adapter.html -> learn.
 }
 ?>
 

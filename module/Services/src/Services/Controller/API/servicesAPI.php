@@ -24,7 +24,7 @@ class servicesAPI {
     public $lastname;
     
     /**
-     *** @var \ViewModels\DiagnosisViewModel[]**
+     ***tio @var \ViewModels\DiagnosisViewModel[]**
      * */
     public $diagnosis;
     
@@ -51,7 +51,7 @@ class servicesAPI {
      */
     public function hello()
     {
-        return 'Hello Sebastian';
+        return 'Hello Martin';
     }
 
 }

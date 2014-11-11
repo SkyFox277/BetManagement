@@ -21,8 +21,8 @@ require_once 'API/servicesAPI.php';
 
 class ServicesController extends AbstractActionController
 {
-    private $_WSDL_URI="http://192.168.168.114/services?wsdl";
-    private $_URI="http://192.168.168.114/services";
+    private $_WSDL_URI="http://localhost/services?wsdl";
+    private $_URI="http://localhost/services";
 
     public function indexAction()
     {

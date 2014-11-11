@@ -10,12 +10,46 @@
 namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
+use Zend\Soap\Client;
 
 class IndexController extends AbstractActionController
 {
+    private $_WSDL_URI="http://localhost/services?wsdl";
+    private $_URI="http://localhost/services";
+    
     public function indexAction()
     {
-        return new ViewModel();
+     $client = new Client($this->_WSDL_URI);
+        
+        echo  $client->hello();
+        echo $client->md5Value("qwea");
+
+
+//         print_r($client->getClassmap());
+//         echo "</br></br>--------</br>";
+//         print_r($client->getLastMethod());
+//         echo "</br></br>--------</br>";
+//         print_r($client->getLastRequestHeaders());
+//         echo "</br></br>--------</br>";
+        //         print_r($client->getLastRequest());
+        //         echo "</br></br>--------</br>";
+        //         print_r($client->getLastResponseHeaders());
+        //         echo "</br></br>--------</br>";
+//         print_r($client->getLastResponse());
+//         echo "</br></br>--------</br>";
+//         print_r($client->getOptions());
+//         echo "</br></br>--------</br>";
+//         print_r($client->getWSDL());
+//         echo "</br></br>--------</br>";
+        
+        //                 try {
+        //                     $responce = $client->hello();
+        //                     echo $responce;
+        //                     if ($responce == \SoapFault){
+        //                         echo $client->getLastResponse();
+        //                     }
+        //                 } catch (\Exception $e) {
+        
+        //                 }
     }
 }

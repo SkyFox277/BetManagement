@@ -12,7 +12,6 @@ namespace Services\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Soap\AutoDiscover;
 use Zend\Soap\Server;
-use Zend\Soap\Client;
 
 ini_set("soap.wsdl_cache_enabled", 0);
 
@@ -21,6 +20,7 @@ require_once 'API/servicesAPI.php';
 
 class ServicesController extends AbstractActionController
 {
+    //TODO: Variablen auslagern
     private $_WSDL_URI="http://localhost/services?wsdl";
     private $_URI="http://localhost/services";
 
@@ -32,13 +32,7 @@ class ServicesController extends AbstractActionController
                         
             $autodiscover = new AutoDiscover();
             $autodiscover   ->setClass($api)
-//                             ->setBindingStyle(array('style' => 'Document/Literal',
-//                                                     'use' => 'literal'
-                                
-//                                                    )
-//                                               )
-                            ->setUri($this->_URI)
-                            
+                            ->setUri($this->_URI)                          
             ;
 //             header ("Content-Type:text/xml");
 // //             header('Content-type: application/xml');
@@ -61,57 +55,15 @@ class ServicesController extends AbstractActionController
 
     public function wsdlAction()
     {
-       
         $api = new servicesAPI();
-                        
+        
         $autodiscover = new AutoDiscover();
-        $autodiscover   ->setServiceName('servicesAPI')
-        ->setBindingStyle(array('style' => 'Document/Literal'))
-                        ->addFunction('hello')
-                        ->setUri($this->_URI);
-
-        $wsdl = $autodiscover->generate()->toXML();
-        echo $wsdl;
-        exit();
-// $autodiscover->handle();
-    
+        $autodiscover   ->setClass($api)
+        ->setUri($this->_URI)
+        ;
+        $autodiscover->handle();
+        
+        return $this->getResponse();
     }
 
-
-    public function clientAction() {
-        
-        $client = new Client($this->_WSDL_URI);
-        
-        echo  $client->hello();
-        echo $client->md5Value("qwe");
-
-
-//         print_r($client->getClassmap());
-//         echo "</br></br>--------</br>";
-//         print_r($client->getLastMethod());
-//         echo "</br></br>--------</br>";
-//         print_r($client->getLastRequestHeaders());
-//         echo "</br></br>--------</br>";
-        //         print_r($client->getLastRequest());
-        //         echo "</br></br>--------</br>";
-        //         print_r($client->getLastResponseHeaders());
-        //         echo "</br></br>--------</br>";
-//         print_r($client->getLastResponse());
-//         echo "</br></br>--------</br>";
-//         print_r($client->getOptions());
-//         echo "</br></br>--------</br>";
-//         print_r($client->getWSDL());
-//         echo "</br></br>--------</br>";
-        
-        //                 try {
-        //                     $responce = $client->hello();
-        //                     echo $responce;
-        //                     if ($responce == \SoapFault){
-        //                         echo $client->getLastResponse();
-        //                     }
-        //                 } catch (\Exception $e) {
-        
-        //                 }
-
-    }
 }

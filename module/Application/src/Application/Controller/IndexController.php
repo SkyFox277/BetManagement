@@ -14,6 +14,7 @@ use Zend\Soap\Client;
 
 class IndexController extends AbstractActionController
 {
+    //TODO: Variablen auslagern
     private $_WSDL_URI="http://localhost/services?wsdl";
     private $_URI="http://localhost/services";
     

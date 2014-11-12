@@ -7,7 +7,7 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
-namespace Application\Controller;
+namespace Client\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Soap\Client;

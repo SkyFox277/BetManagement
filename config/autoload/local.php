@@ -9,30 +9,13 @@
  * @NOTE: This file is ignored from Git by default with the .gitignore included
  * in ZendSkeletonApplication. This is a good practice, as it prevents sensitive
  * credentials from accidentally being committed into version control.
+ * 
+ * 
+ * !!!!ALLE .local.* Datein aus dem commit herausnehmen!!!!
+ * dies machst du mit r-click auf Datei/Team/Advanced/Assume unchanged
+ * 
  */
 
 return array(
-    
-    
-    
-  
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+ 
 );

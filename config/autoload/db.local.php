@@ -4,6 +4,4 @@ return array(
         'username' => 'betmanager',
         'password' => '72SQvCV2fdWzB9tV',
     ),
-    
-    //test congig
 );

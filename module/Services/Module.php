@@ -10,10 +10,16 @@
 namespace Services;
 
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
+use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\TableGateway\TableGateway;
+use Services\Model\Group;
+use Services\Model\GroupTable;
 
-class Module implements AutoloaderProviderInterface
+
+class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 {
     public function getAutoloaderConfig()
     {
@@ -43,4 +49,24 @@ class Module implements AutoloaderProviderInterface
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
     }
+    
+    public function getServiceConfig()
+    {
+        return array(
+            'factories' => array(
+                'Services\Model\GroupTable' =>  function($sm) {
+                    $tableGateway = $sm->get('GroupTableGateway');
+                    $table = new GroupTable($tableGateway);
+                    return $table;
+                },
+                'GroupTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Group());
+                    return new TableGateway('groups', $dbAdapter, null, $resultSetPrototype);
+                },
+            ),
+        );
+    }
+    
 }

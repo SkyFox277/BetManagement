@@ -15,7 +15,7 @@ return array(
                 'options' => array(
                     'route'    => '/',
                     'defaults' => array(
-                        'controller' => 'Client\Controller\Index',
+                        'controller' => 'Client\Controller\Client',
                         'action'     => 'index',
                     ),
                 ),
@@ -24,13 +24,13 @@ return array(
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
             // using the path /application/:controller/:action
-            'application' => array(
+            'client' => array(
                 'type'    => 'Literal',
                 'options' => array(
                     'route'    => '/client',
                     'defaults' => array(
                         '__NAMESPACE__' => 'Client\Controller',
-                        'controller'    => 'Index',
+                        'controller'    => 'Client',
                         'action'        => 'index',
                     ),
                 ),
@@ -57,12 +57,16 @@ return array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
             'Zend\Log\LoggerAbstractServiceFactory',
         ),
-        'aliases' => array(
-            'translator' => 'MvcTranslator',
+//         'aliases' => array(
+//             'translator' => 'MvcTranslator',
+//         ),
+        'factories' => array(
+            'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
+            'navigation' => 'Zend\Navigation\Service\DefaultNavigationFactory', 
         ),
     ),
     'translator' => array(
-        'locale' => 'en_US',
+        'locale' => 'de_DE',
         'translation_file_patterns' => array(
             array(
                 'type'     => 'gettext',
@@ -73,7 +77,8 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Client\Controller\Index' => 'Client\Controller\IndexController'
+            'Client\Controller\Client' => 'Client\Controller\ClientController',
+            'Client\Controller\Group' => 'Client\Controller\GroupController'
         ),
     ),
     'view_manager' => array(
@@ -84,7 +89,7 @@ return array(
         'exception_template'       => 'error/index',
         'template_map' => array(
             'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
-            'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
+            'client/index/index'      => __DIR__ . '/../view/client/index/index.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
         ),
@@ -99,4 +104,59 @@ return array(
             ),
         ),
     ),
+    
+//     //Navigation
+//     'navigation' => array(
+//         'default' => array(
+//             array(
+//                 'label' => 'Home',
+//                 'route' => 'home',
+//             ),
+//             array(
+//                 'label' => 'Client',
+//                 'route' => 'client',
+//                 'pages' => array(
+//                     array(
+//                         'label' => 'index',
+//                         'route' => 'client',
+//                         'action' => 'index',
+//                     ),
+//                     array(
+//                         'label' => 'Edit',
+//                         'route' => 'client',
+//                         'action' => 'test2',
+//                     ),
+//                     array(
+//                         'label' => 'Delete',
+//                         'route' => 'client',
+//                         'action' => 'test3',
+//                     ),
+//                 ),
+//             ),
+//             array(
+//                 'label' => 'Server',
+//                 'route' => 'services',
+//                 'pages' => array(
+//                     array(
+//                         'label' => 'Server',
+//                         'route' => 'services',
+//                         'action' => 'index',
+//                     ),
+//                     array(
+//                         'label' => 'serverGetwsdl',
+//                         'route' => 'services',
+//                         'action' => 'index?wsdl',
+//                     ),
+//                     array(
+//                         'label' => 'wsdl',
+//                         'route' => 'services',
+//                         'action' => 'wsdl',
+//                     ),
+//                 ),
+//             ),
+
+            
+//         ),
+//     ),
+//     //---Navigation
 );

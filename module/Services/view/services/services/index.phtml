@@ -1,3 +1,52 @@
+<?php
+
+/*
+$title = 'My groups';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+
+<table class="table">
+<tr>
+    <th>id</th>
+    <th>Artist</th>
+    <th>&nbsp;</th>
+</tr>
+<?php foreach ($albums as $album) : ?>
+<tr>
+    <td><?php echo $this->escapeHtml($album->title);?></td>
+    <td><?php echo $this->escapeHtml($album->artist);?></td>
+    <td>
+        <a href="<?php echo $this->url('album',
+            array('action'=>'edit', 'id' => $album->id));?>">Edit</a>
+        <a href="<?php echo $this->url('album',
+            array('action'=>'delete', 'id' => $album->id));?>">Delete</a>
+    </td>
+</tr>
+<?php endforeach; ?>
+</table>
+
+*/ 
+print_r($groupen);
+
+echo "</br></br>";
+
+?>
+
+<table class="table">
+<tr>
+    <th>Id</th>
+    <th>Group</th>
+</tr>
+<?php foreach ($groupen as $group) : ?>
+<tr>
+    <td><?php echo $this->escapeHtml($group->id);?></td>
+    <td><?php echo $this->escapeHtml($group->groupname);?></td>
+</tr>
+<?php endforeach; ?>
+</table>
+
 <strong>Module:</strong>        Services &raquo;
 <strong>Controller:</strong>    Services &raquo;
 <strong>Action:</strong>        index

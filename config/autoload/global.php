@@ -27,5 +27,4 @@
              => 'Zend\Db\Adapter\AdapterServiceFactory',
          ),
      ),
-
 );

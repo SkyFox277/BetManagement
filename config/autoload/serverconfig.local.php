@@ -5,25 +5,4 @@ return array(
         'location'  =>  'http://localhost/services',
         'wsdl'      =>  'http://localhost/services?wsdl',
     )
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //lalalal
 );

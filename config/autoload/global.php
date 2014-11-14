@@ -11,6 +11,8 @@
  * file.
  * 
  * !!!!ALLE .local.* Datein aus dem commit herausnehmen!!!!
+ * dies machst du mit r-click auf Datei/Team/Advanced/Assume unchanged
+ * 
  */
 
  return array(

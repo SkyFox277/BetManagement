@@ -6,4 +6,24 @@ return array(
         'wsdl'      =>  'http://localhost/services?wsdl',
     )
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    //lalalal
 );

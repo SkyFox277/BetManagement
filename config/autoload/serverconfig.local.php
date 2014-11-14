@@ -1,8 +1,8 @@
 <?php
 return array(
     'ServerConfig'  =>  array(
-        'uri'       =>  'http://localhost/services',
-        'location'  =>  'http://localhost/services',
-        'wsdl'      =>  'http://localhost/services?wsdl',
+        'uri'       =>  'http://xxxx/services',
+        'location'  =>  'http://xxxx/services',
+        'wsdl'      =>  'http://xxxx/services?wsdl',
     )
 );

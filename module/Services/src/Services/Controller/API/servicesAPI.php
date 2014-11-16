@@ -4,16 +4,16 @@
  * SOAP API
  */
  
-namespace Services\Controller\API;
+namespace Services\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Soap\AutoDiscover;
 use Zend\Soap\Server;
 use Services\Model\GroupTable;
+use Services\Controller\ReturnableClass;
 
-class servicesAPI extends AbstractActionController
+class servicesAPI
 {
-    
     /**
      * @var int
      * */
@@ -34,16 +34,7 @@ class servicesAPI extends AbstractActionController
      * */
     public $diagnosis;
     
-    protected $groupTable;
-    
-    public function getGroupTable()
-    {
-        if (!$this->groupTable) {
-            $sm = $this->getServiceLocator();
-            $this->groupTable = $sm->get('Services\Model\GroupTable');
-        }
-        return $this->groupTable;
-    }
+
     
     public function __construct()
     {
@@ -65,11 +56,15 @@ class servicesAPI extends AbstractActionController
      * Hello World
      * @return string
      */
-    public function hello()
-    {
+    public function hello(){
         return 'Hello Martin';
     }
     
-    
-
+    /**
+     * Serverauthentification.
+     * @return string
+     */
+    public function SignIn(){
+    	return 'nothing';
+    }
 }

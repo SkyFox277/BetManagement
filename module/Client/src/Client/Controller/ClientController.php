@@ -22,11 +22,11 @@ class ClientController extends AbstractActionController
     public function indexAction()
     {
         echo "client </br>";
-     $client = new Client($this->_WSDL_URI);
-        
-        echo  $client->hello();
-        echo $client->md5Value("qwea");
+     	$client = new Client($this->_WSDL_URI);
 
+     	echo $client->hello();
+        echo "<br>" . $client->md5Value("qwea");
+        echo "<br>" .$client->signin();
 
         return new ViewModel();
     }

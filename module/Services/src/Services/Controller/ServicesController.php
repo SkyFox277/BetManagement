@@ -19,8 +19,6 @@ use Zend\View\Model\ViewModel;
 
 ini_set("soap.wsdl_cache_enabled", 0);
 
-// require_once 'API/servicesAPI.php';
-
 class ServicesController extends AbstractActionController
 {
     //TODO: Variablen auslagern
@@ -45,20 +43,13 @@ class ServicesController extends AbstractActionController
         $api = new servicesAPI();
         
         if(isset($_GET['wsdl'])) {
-                        
             $autodiscover = new AutoDiscover();
             $autodiscover   ->setClass($api)
                             ->setUri($this->_URI);
             $autodiscover->handle();
         
             return $this->getResponse();
-
-        } else {
-   
-//             $soap = new Server($this->_WSDL_URI);
-//             $soap->setClass($api);
-//             $soap->handle();
-            
+        } else {           
             return new ViewModel(array(
                 'groupen' => $api->getGroupTable()->fetchAll(),
             ));

@@ -20,7 +20,7 @@
  
 return array(
     'db' => array(
-        'username' => 'xxxxxx',
-        'password' => 'xxxxxx',
+        'username' => 'root',
+        'password' => '',
     ),  
 );

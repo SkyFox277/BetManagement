@@ -22,8 +22,7 @@ require_once 'API/servicesAPI.php';
 class ServicesController extends AbstractActionController
 {
 	//TODO: Variablen auslagern
-	private $_WSDL_URI="http://localhost/services?wsdl";
-	private $_URI="http://localhost/services";
+	private $sconfig;
 
 	protected $groupTable;
 
@@ -38,11 +37,12 @@ class ServicesController extends AbstractActionController
 
 	public function wsdlAction()
 	{
+	    $this->sconfig = $this->getServiceLocator()->get('Config')['ServerConfig'];
 		$api = new servicesAPI();
 
 		$autodiscover = new AutoDiscover();
 		$autodiscover   ->setClass($api)
-		->setUri($this->_URI)
+		->setUri($this->sconfig['uri'])
 		;
 		$autodiscover->handle();
 
@@ -51,19 +51,19 @@ class ServicesController extends AbstractActionController
 
 	public function indexAction()
 	{
+	    $this->sconfig = $this->getServiceLocator()->get('Config')['ServerConfig'];
 		$api = new servicesAPI();
 
 		if(isset($_GET['wsdl'])) {
+		    
 			$autodiscover = new AutoDiscover();
 			$autodiscover   ->setClass($api)
-			->setUri($this->_URI);
+			->setUri($this->sconfig['uri']);
 			$autodiscover->handle();
-
-			return $this->getResponse();
 
 		} else {
 			 
-			$soap = new Server($this->_WSDL_URI);
+			$soap = new Server($this->sconfig['wsdl']);
 			$soap->setClass($api);
 			$soap->handle();
 

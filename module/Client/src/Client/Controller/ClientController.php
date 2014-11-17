@@ -14,34 +14,50 @@ use Zend\Soap\Client;
 use Zend\View\Model\ViewModel;
 
 class ClientController extends AbstractActionController
-{
-    //TODO: Variablen auslagern
-    private $_WSDL_URI="http://localhost/services?wsdl";
-    private $_URI="http://localhost/services";
-    
+{  
+    /**
+     * Einstiegsfunktion des Soap-Clients. (non-PHPdoc)
+     * @see \Zend\Mvc\Controller\AbstractActionController::indexAction()
+     */
     public function indexAction()
     {
+        $sconfig = $this->getServiceLocator()->get('Config')['ServerConfig'];
+        
         echo "client </br>";
-     	$client = new Client($this->_WSDL_URI);
+     	$client = new Client($sconfig['wsdl']);
 
      	echo $client->hello();
         echo "<br>" . $client->md5Value("qwea");
+        
+        echo "<br>----------------------";
+        echo "<br>" . $client->getLastRequestHeaders();
+        echo "<br>----------------------";
+        echo "<br>" . $client->getLastResponseHeaders();
+        
+        echo "<br>----------------------";
+        
         echo "<br>" .$client->signin();
 
         return new ViewModel();
     }
+    
+    
     public function test1Action()
     {
         echo "test1 </br>";
                
         return new ViewModel();
     }
+    
+    
     public function test2Action()
     {
         echo "test2 </br>";
          
         return new ViewModel();
     }
+    
+    
     public function test3Action()
     {
         echo "test3 </br>";

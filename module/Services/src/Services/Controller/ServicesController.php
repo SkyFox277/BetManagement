@@ -17,6 +17,8 @@ use Services\Model\GroupTable;
 
 // TODO nach dem testen auskomentieren
 use Zend\View\Model\ViewModel;
+use Zend\Soap\Wsdl\ComplexTypeStrategy\ArrayOfTypeComplex;
+use Zend\Soap\Wsdl\ComplexTypeStrategy\AnyType;
 
 
 class ServicesController extends AbstractActionController
@@ -35,6 +37,8 @@ class ServicesController extends AbstractActionController
 		$autodiscover = new AutoDiscover();
 		$autodiscover   ->setClass($api)
 		->setUri($this->sconfig['uri'])
+
+		
 		;
 		$autodiscover->handle();
 
@@ -53,7 +57,10 @@ class ServicesController extends AbstractActionController
 		    
 			$autodiscover = new AutoDiscover();
 			$autodiscover   ->setClass($api)
-			->setUri($this->sconfig['uri']);
+			->setUri($this->sconfig['uri'])
+			->setComplexTypeStrategy(new AnyType())
+// 			->setClassMap(new clas)
+			;
 			$autodiscover->handle();
 
 		} else {

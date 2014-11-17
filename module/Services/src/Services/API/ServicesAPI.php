@@ -28,7 +28,7 @@ class ServicesAPI
 
     /**
      * Liefert eine Gruppen Tabelle zurück
-     * @return array
+     * @return Group
      */
     public function getGroupTable()
     {
@@ -44,9 +44,6 @@ class ServicesAPI
         );
         
         $this->group = new Group($data);
-        
-        
-        
 
 //         return serialize($this->group);//         funktioniert mit return string
 

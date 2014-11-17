@@ -11,33 +11,24 @@ namespace Services\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Soap\AutoDiscover;
 use Zend\Soap\Server;
-// use \Services\API\ServicesAPI;
+use Services\API\ServicesAPI;
 
 // TODO nach dem testen auskomentieren
 use Zend\View\Model\ViewModel;
-use Services\API\ServicesAPI;
+
 
 class ServicesController extends AbstractActionController
 {
 	private $sconfig;
-
-	protected $groupTable;
-
-	public function getGroupTable()
-	{
-		if (!$this->groupTable) {
-			$sm = $this->getServiceLocator();
-			$this->groupTable = $sm->get('Services\Model\GroupTable');
-		}
-		return $this->groupTable;
-	}
 
 	public function wsdlAction()
 	{
 	    ini_set("soap.wsdl_cache_enabled", "0");
 	    
 	    $this->sconfig = $this->getServiceLocator()->get('Config')['ServerConfig'];
+	    
 		$api = new ServicesAPI();
+// 		$api = new ServicesAPI($this->getServiceLocator()->get('db'));
 
 		$autodiscover = new AutoDiscover();
 		$autodiscover   ->setClass($api)
@@ -52,6 +43,7 @@ class ServicesController extends AbstractActionController
 	{
 	    $this->sconfig = $this->getServiceLocator()->get('Config')['ServerConfig'];
 		$api = new ServicesAPI();
+// 		$api = new ServicesAPI($this->getServiceLocator()->get('db'));
 		
 		ini_set("soap.wsdl_cache_enabled", "0");
 

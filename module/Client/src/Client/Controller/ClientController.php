@@ -29,15 +29,18 @@ class ClientController extends AbstractActionController
 
      	echo $client->hello();
         echo "<br>" . $client->md5Value("qwea");
-        
-        echo "<br>----------------------";
-        echo "<br>" . $client->getLastRequestHeaders();
-        echo "<br>----------------------";
-        echo "<br>" . $client->getLastResponseHeaders();
-        
-        echo "<br>----------------------";
-        
+               
         echo "<br>" .$client->signin();
+        
+        echo "<br>" .$client->getGroupTable();
+        
+        
+        echo "<br>----------------------";
+        echo "<br>" . $client->getLastRequest();
+        echo "<br>----------------------";
+        echo "<br>" . $client->getLastResponse();
+        
+        echo "<br>----------------------";
 
         return new ViewModel();
     }

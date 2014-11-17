@@ -59,6 +59,7 @@ class ServicesController extends AbstractActionController
 			$autodiscover   ->setClass($api)
 			->setUri($this->sconfig['uri'])
 			->setComplexTypeStrategy(new AnyType())
+			//TODO classmap hinzufügen damit eine classe zurückgegeben werden kann
 // 			->setClassMap(new clas)
 			;
 			$autodiscover->handle();

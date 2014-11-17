@@ -27,8 +27,8 @@ class ServicesAPI
     }
 
     /**
-     * Liefert eine Gruppen Tabelle zurück
-     * @return Group
+     * Liefert eine Gruppen Tabelle zurück //TODO hier als rückgabe die Group
+     * @return array
      */
     public function getGroupTable()
     {

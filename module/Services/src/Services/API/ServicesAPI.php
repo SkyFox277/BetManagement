@@ -13,10 +13,12 @@ use Services\Model\GroupTable;
 use Services\Controller\ReturnableClass;
 use Zend\Db\Adapter\Adapter;
 use Zend\Di\Definition\ClassDefinition;
+use Services\Model\Group;
 
 class ServicesAPI
 {
     protected $groupTable;
+    protected $group;
     
     public function __construct() {
 
@@ -34,7 +36,22 @@ class ServicesAPI
 //             $sm = $this->getServiceLocator();
 //             $this->groupTable =  $sm->get('Services\Model\GroupTable');
 //         }
-        return $this->groupTable;
+
+        $data = array('id'          => 4,
+                            'voicetag'      => 'DE',
+                            'groupname'     => 'test1',
+                            'isactive'      => 1 
+        );
+        
+        $this->group = new Group($data);
+        
+        
+        
+
+//         return serialize($this->group);//         funktioniert mit return string
+
+        
+        return  $this->group;
     }
     /**
      * This method takes a value and gives back the md5 hash of the value
@@ -105,4 +122,14 @@ class ServicesAPI
 //         }
 //         return $destination;
 //     }
+
+    private function cast_serealize($to_class, $obj) {
+        if(class_exists($to_class)) {
+            $obj_in = serialize($obj);
+            $obj_out = 'O:' . strlen($to_class) . ':"' . $to_class . '":' . substr($obj_in, $obj_in[2] + 7);
+            return unserialize($obj_out);
+        }
+        else
+            return false;
+    }
 }

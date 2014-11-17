@@ -12,6 +12,8 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Soap\AutoDiscover;
 use Zend\Soap\Server;
 use Services\API\ServicesAPI;
+use Services\Model\Group;
+use Services\Model\GroupTable;
 
 // TODO nach dem testen auskomentieren
 use Zend\View\Model\ViewModel;

@@ -12,6 +12,8 @@ namespace Client\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Soap\Client;
 use Zend\View\Model\ViewModel;
+use Services\Model\Group;
+
 
 class ClientController extends AbstractActionController
 {  
@@ -32,15 +34,33 @@ class ClientController extends AbstractActionController
                
         echo "<br>" .$client->signin();
         
-        echo "<br>" .$client->getGroupTable();
+        echo "<br>" . $result = $client->getGroupTable();
         
         
         echo "<br>----------------------";
-        echo "<br>" . $client->getLastRequest();
+        echo "<br>";
+        echo $client->getLastRequest();
         echo "<br>----------------------";
-        echo "<br>" . $client->getLastResponse();
+        echo "<br>"; 
+        echo $client->getLastResponse();
+        echo "<br>----------------------";
         
-        echo "<br>----------------------";
+        echo "<pre>";
+        var_dump($result);
+        echo "</pre>";
+//         return $this->response;
+
+        
+        $data = array('id'          => 4,
+            'voicetag'      => 'DE',
+            'groupname'     => 'test1',
+            'isactive'      => 1
+        );
+        
+        $group = new Group($data);
+        echo "<pre>";
+        var_dump($group);
+        echo "</pre>";
 
         return new ViewModel();
     }

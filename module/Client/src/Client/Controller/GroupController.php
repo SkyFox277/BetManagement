@@ -15,9 +15,6 @@ use Zend\View\Model\ViewModel;
 
 class GroupController extends AbstractActionController
 {
-    //TODO: Variablen auslagern
-    private $_WSDL_URI="http://localhost/services?wsdl";
-    private $_URI="http://localhost/services";
     
     public function indexAction()
     {

@@ -21,7 +21,6 @@ require_once 'API/servicesAPI.php';
 
 class ServicesController extends AbstractActionController
 {
-	//TODO: Variablen auslagern
 	private $sconfig;
 
 	protected $groupTable;
@@ -53,6 +52,8 @@ class ServicesController extends AbstractActionController
 	{
 	    $this->sconfig = $this->getServiceLocator()->get('Config')['ServerConfig'];
 		$api = new servicesAPI();
+		
+		ini_set("soap.wsdl_cache_enabled", "0");
 
 		if(isset($_GET['wsdl'])) {
 		    
@@ -62,15 +63,21 @@ class ServicesController extends AbstractActionController
 			$autodiscover->handle();
 
 		} else {
-			 
-			$soap = new Server($this->sconfig['wsdl']);
+
+		    $options=array('cache_wsdl' => 0);
+		    
+		    //TODO eventuell später die Adresse anpassen
+// 		    $basePath = $this->getRequest()->getBasePath();
+// 		    ->setUri('http://'.$_SERVER['SERVER_NAME'].$basePath.'/soapserver/soap')
+		    
+			$soap = new Server($this->sconfig['wsdl'], $options);
 			$soap->setClass($api);
 			$soap->handle();
 
 			//return new ViewModel(array(
 			//		'groupen' => $this->getGroupTable()->fetchAll(),
 			//));
-
+	
 		}
 		return $this->getResponse();
 	}

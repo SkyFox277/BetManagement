@@ -11,13 +11,11 @@ namespace Services\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Soap\AutoDiscover;
 use Zend\Soap\Server;
+// use \Services\API\ServicesAPI;
 
 // TODO nach dem testen auskomentieren
 use Zend\View\Model\ViewModel;
-
-ini_set("soap.wsdl_cache_enabled", 0);
-
-require_once 'API/servicesAPI.php';
+use Services\API\ServicesAPI;
 
 class ServicesController extends AbstractActionController
 {
@@ -36,8 +34,10 @@ class ServicesController extends AbstractActionController
 
 	public function wsdlAction()
 	{
+	    ini_set("soap.wsdl_cache_enabled", "0");
+	    
 	    $this->sconfig = $this->getServiceLocator()->get('Config')['ServerConfig'];
-		$api = new servicesAPI();
+		$api = new ServicesAPI();
 
 		$autodiscover = new AutoDiscover();
 		$autodiscover   ->setClass($api)
@@ -51,7 +51,7 @@ class ServicesController extends AbstractActionController
 	public function indexAction()
 	{
 	    $this->sconfig = $this->getServiceLocator()->get('Config')['ServerConfig'];
-		$api = new servicesAPI();
+		$api = new ServicesAPI();
 		
 		ini_set("soap.wsdl_cache_enabled", "0");
 

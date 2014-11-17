@@ -4,42 +4,22 @@
  * SOAP API
  */
  
-namespace Services\Controller;
+namespace Services\API;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Soap\AutoDiscover;
 use Zend\Soap\Server;
 use Services\Model\GroupTable;
 use Services\Controller\ReturnableClass;
+use Zend\Db\Adapter\Adapter;
+use Zend\Di\Definition\ClassDefinition;
 
-class servicesAPI
+class ServicesAPI
 {
-    /**
-     * @var int
-     * */
-    public $id;
-    
-    /**
-     * @var string
-     * */
-    public $firstname;
-    
-    /**
-     * @var string
-     * */
-    public $lastname;
-    
-    /**
-     ***tio @var \ViewModels\DiagnosisViewModel[]**
-     * */
-    public $diagnosis;
-    
 
-    
     public function __construct()
     {
-        $this->id = 1;
-        $this->firstname = 'asd';
+
     }
     
     /**
@@ -57,7 +37,7 @@ class servicesAPI
      * @return string
      */
     public function hello(){
-        return 'Hello Martin';
+        return 'Halli hallo halloly';
     }
     
     /**

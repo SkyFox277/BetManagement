@@ -17,6 +17,9 @@ use Services\Model\GroupTable;
 
 // TODO nach dem testen auskomentieren
 use Zend\View\Model\ViewModel;
+
+
+
 use Zend\Soap\Wsdl\ComplexTypeStrategy\ArrayOfTypeComplex;
 use Zend\Soap\Wsdl\ComplexTypeStrategy\AnyType;
 
@@ -47,33 +50,39 @@ class ServicesController extends AbstractActionController
 
 	public function indexAction()
 	{
+
 	    $this->sconfig = $this->getServiceLocator()->get('Config')['ServerConfig'];
 		$api = new ServicesAPI();
 // 		$api = new ServicesAPI($this->getServiceLocator()->get('db'));
 		
 		ini_set("soap.wsdl_cache_enabled", "0");
 		
-		$classmap = array('Group'          => 'Group',
-			              'ServicesAPI'    => 'ServicesAPI'
+		$classmap = array('Group'         => 'Group',
+		                  'ServicesAPI'   => 'ServicesAPI'
 			);
 
 		if(isset($_GET['wsdl'])) {
 		    
-			$autodiscover = new AutoDiscover(new ArrayOfTypeComplex());
-			$autodiscover   ->setClass($api)
-			->setUri($this->sconfig['uri'])
-// 			->setComplexTypeStrategy(new AnyType())
-			//TODO classmap hinzufügen damit eine classe zurückgegeben werden kann
-			->setClassMap($classmap)
+			$autodiscover = new AutoDiscover();
+			$autodiscover->setServiceName('BMService')
+            			->setComplexTypeStrategy(new \Zend\Soap\Wsdl\ComplexTypeStrategy\ArrayOfTypeComplex)
+            			->setClass('Services\API\ServicesAPI')
+            			->setUri($this->sconfig['uri'])
+            			
+            // 			->setComplexTypeStrategy(new AnyType())
+            			//TODO classmap hinzufügen damit eine classe zurückgegeben werden kann
+            			
+//             			->setClassMap($classmap)
 			;
 			$autodiscover->generate();
 			$autodiscover->handle();
+			
 
 		} else {
 
 		    $options=array('cache_wsdl'   => 0,
 		                  'trace'         => 1,
-		                  'classmap'      => $classmap,
+// 		                  'classmap'      => $classmap,
 		                  
 		    );
 		    
@@ -83,6 +92,8 @@ class ServicesController extends AbstractActionController
 		    
 			$soap = new Server($this->sconfig['wsdl'], $options);
 			$soap->setClass($api);
+			
+// 			print_r($soap->getOptions());
 			$soap->handle();
 
 			//return new ViewModel(array(

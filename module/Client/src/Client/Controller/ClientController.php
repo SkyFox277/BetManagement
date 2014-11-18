@@ -24,17 +24,22 @@ class ClientController extends AbstractActionController
     public function indexAction()
     {
         $sconfig = $this->getServiceLocator()->get('Config')['ServerConfig'];
-        $options = array('compression' => SOAP_COMPRESSION_ACCEPT,'cache_wsdl' => 0,'soap_version'   => SOAP_1_2);
+        $options = array('compression'  => SOAP_COMPRESSION_ACCEPT,
+                        'cache_wsdl'    => 0,
+                        'soap_version'  => SOAP_1_2  
+        );
         
         echo "client </br>";
      	$client = new Client($sconfig['wsdl'], $options);
 
+     	echo  $client->getClassmap();
+     	echo "<br>----------------------";
      	echo $client->hello();
         echo "<br>" . $client->md5Value("qwea");
                
         echo "<br>" .$client->signin();
         
-        echo "<br>" . $result = $client->getGroupTable();
+        echo "<br>" . $result = $client->getGTable();
         
         
         echo "<br>----------------------";

@@ -6,14 +6,8 @@
  
 namespace Services\API;
 
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Soap\AutoDiscover;
-use Zend\Soap\Server;
-use Services\Model\GroupTable;
-use Services\Controller\ReturnableClass;
-use Zend\Db\Adapter\Adapter;
-use Zend\Di\Definition\ClassDefinition;
 use Services\Model\Group;
+
 
 class ServicesAPI
 {
@@ -27,8 +21,8 @@ class ServicesAPI
     }
 
     /**
-     * Liefert eine Gruppen Tabelle zurück //TODO hier als rückgabe die Group
-     * @return array
+     * Liefert eine Gruppen Tabelle zurück //TODO hier als rückgabe die Klasse
+     * @return string
      */
     public function getGTable()
     {
@@ -50,6 +44,7 @@ class ServicesAPI
         
         return  $this->group;
     }
+    
     /**
      * This method takes a value and gives back the md5 hash of the value
      *

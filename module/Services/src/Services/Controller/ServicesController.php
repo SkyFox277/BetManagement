@@ -52,21 +52,30 @@ class ServicesController extends AbstractActionController
 // 		$api = new ServicesAPI($this->getServiceLocator()->get('db'));
 		
 		ini_set("soap.wsdl_cache_enabled", "0");
+		
+		$classmap = array('Group'          => 'Group',
+			              'ServicesAPI'    => 'ServicesAPI'
+			);
 
 		if(isset($_GET['wsdl'])) {
 		    
-			$autodiscover = new AutoDiscover();
+			$autodiscover = new AutoDiscover(new ArrayOfTypeComplex());
 			$autodiscover   ->setClass($api)
 			->setUri($this->sconfig['uri'])
-			->setComplexTypeStrategy(new AnyType())
+// 			->setComplexTypeStrategy(new AnyType())
 			//TODO classmap hinzufügen damit eine classe zurückgegeben werden kann
-// 			->setClassMap(new clas)
+			->setClassMap($classmap)
 			;
+			$autodiscover->generate();
 			$autodiscover->handle();
 
 		} else {
 
-		    $options=array('cache_wsdl' => 0);
+		    $options=array('cache_wsdl'   => 0,
+		                  'trace'         => 1,
+		                  'classmap'      => $classmap,
+		                  
+		    );
 		    
 		    //TODO eventuell später die Adresse anpassen
 // 		    $basePath = $this->getRequest()->getBasePath();

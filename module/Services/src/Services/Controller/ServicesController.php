@@ -60,20 +60,26 @@ class ServicesController extends AbstractActionController
 		$classmap = array('Group'         => 'Group',
 		                  'ServicesAPI'   => 'ServicesAPI'
 			);
+		
+		$types = new \Zend\Soap\Wsdl\ComplexTypeStrategy\AnyType();
+		$types->addComplexType('Group');
 
 		if(isset($_GET['wsdl'])) {
 		    
 			$autodiscover = new AutoDiscover();
 			$autodiscover->setServiceName('BMService')
-            			->setComplexTypeStrategy(new \Zend\Soap\Wsdl\ComplexTypeStrategy\ArrayOfTypeComplex)
+            			->setComplexTypeStrategy($types)
             			->setClass('Services\API\ServicesAPI')
             			->setUri($this->sconfig['uri'])
             			
             // 			->setComplexTypeStrategy(new AnyType())
             			//TODO classmap hinzufügen damit eine classe zurückgegeben werden kann
             			
-//             			->setClassMap($classmap)
+            			->setClassMap($classmap)
+            			
 			;
+			
+			
 			$autodiscover->generate();
 			$autodiscover->handle();
 			

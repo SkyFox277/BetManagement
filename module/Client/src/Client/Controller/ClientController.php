@@ -39,8 +39,12 @@ class ClientController extends AbstractActionController
                
         echo "<br>" .$client->signin();
         
-        echo "<br>" . $result = $client->getGTable();
+        echo "<br>";
+        $result = $client->getGTable();
         
+        echo "<pre>";
+        var_dump($result);
+        echo "</pre>";
         
         echo "<br>----------------------";
         echo "<br>";
@@ -50,9 +54,9 @@ class ClientController extends AbstractActionController
         echo $client->getLastResponse();
         echo "<br>----------------------";
         
-        echo "<pre>";
-        var_dump($result);
-        echo "</pre>";
+//         echo "<pre>";
+//         var_dump($result);
+//         echo "</pre>";
 //         return $this->response;
 
         

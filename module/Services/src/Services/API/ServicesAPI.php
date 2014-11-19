@@ -12,6 +12,11 @@ use Services\Model\Group;
 class ServicesAPI
 {
     protected $groupTable;
+    
+    /**
+     * 
+     * @var Group
+     */
     protected $group;
     
     public function __construct() {
@@ -22,7 +27,7 @@ class ServicesAPI
 
     /**
      * Liefert eine Gruppen Tabelle zurück //TODO hier als rückgabe die Klasse
-     * @return string
+     * @return Group
      */
     public function getGTable()
     {

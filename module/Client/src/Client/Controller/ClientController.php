@@ -26,14 +26,17 @@ class ClientController extends AbstractActionController
         $sconfig = $this->getServiceLocator()->get('Config')['ServerConfig'];
         $options = array('compression'  => SOAP_COMPRESSION_ACCEPT,
                         'cache_wsdl'    => 0,
-                        'soap_version'  => SOAP_1_2  
+                        'soap_version'  => SOAP_1_2,
+        				'login' => 'Cazzador',
+        				'password' => 'Skyfox'
         );
         
         echo "client </br>";
+        echo $sconfig['wsdl'];
      	$client = new Client($sconfig['wsdl'], $options);
 
      	echo  $client->getClassmap();
-     	echo "<br>----------------------";
+     	echo "<br>----------------+++------";
      	echo $client->hello();
         echo "<br>" . $client->md5Value("qwea");
                
@@ -60,9 +63,9 @@ class ClientController extends AbstractActionController
 //         return $this->response;
 
         
-        $data = array('id'          => 4,
+        $data = array('id'          => 6,
             'voicetag'      => 'DE',
-            'groupname'     => 'test1',
+            'groupname'     => 'test3',
             'isactive'      => 1
         );
         

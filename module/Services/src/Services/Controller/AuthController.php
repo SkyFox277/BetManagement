@@ -1,4 +1,49 @@
-// <?php
+<?php
+namespace Services\Controller;
+
+class Authentification{
+	
+	public $IsAuthentificated = false;
+	
+	function __construct($username,$password){
+		
+		if(strlen(trim($username)) > 0 && trim($username) == "adm" && strlen(trim($password)) > 0 && trim($password) == "pwd") 		
+			$this->IsAuthentificated = true;
+		else 
+			$this->IsAuthentificated = false;
+	}
+}
+?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // namespace Auth\Controller\Plugin;
 
 // use Zend\Mvc\Controller\Plugin\AbstractPlugin;

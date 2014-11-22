@@ -66,22 +66,27 @@ class ServicesController extends AbstractActionController
 
 		if(isset($_GET['wsdl'])) {
 		    
-			$autodiscover = new AutoDiscover();
-			$autodiscover->setServiceName('BMService')
-            			->setComplexTypeStrategy($types)
-            			->setClass('Services\API\ServicesAPI')
-            			->setUri($this->sconfig['uri'])
-            			
-            // 			->setComplexTypeStrategy(new AnyType())
-            			//TODO classmap hinzufügen damit eine classe zurückgegeben werden kann
-            			
-            			->setClassMap($classmap)
-            			
-			;
+			//Logindaten pr�fen.
+			//$Auth = new \Authentification('adm','pwd');
+			//$Auth = new \Authentification('adm', 'pwd');	
 			
-			
-			$autodiscover->generate();
-			$autodiscover->handle();
+			//if (isset($options['login']) && isset($options['password']))
+			//{
+				$autodiscover = new AutoDiscover();
+				$autodiscover->setServiceName('BMService')
+	            			->setComplexTypeStrategy($types)
+	            			->setClass('Services\API\ServicesAPI')
+	            			->setUri($this->sconfig['uri'])
+	            			
+	            // 			->setComplexTypeStrategy(new AnyType())
+	            			//TODO classmap hinzufügen damit eine classe zurückgegeben werden kann
+	            			
+	            			->setClassMap($classmap)
+	            			
+				;			
+				$autodiscover->generate();
+				$autodiscover->handle();
+			//}
 			
 
 		} else {

@@ -2,7 +2,7 @@
 namespace Services\Controller;
 
 class Authentification{
-	
+	//TODO http://blog.routydevelopment.com/2010/01/soap-authenticatation-using-soap-headers-api-class-client-server-wsdl-generation-examples/
 	public $IsAuthentificated = false;
 	
 	function __construct($username,$password){

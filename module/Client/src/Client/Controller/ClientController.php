@@ -12,22 +12,30 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Soap\Client;
 use Zend\View\Model\ViewModel;
 use Services\Model\Group;
-use Zend\Form\Annotation\Object;
 
 class ClientController extends AbstractActionController
 {
+    
 
-    const ROUTE_LOGIN = 'client/login';
-
-    const ROUTE_REGISTER = 'client/register';
-
-    const CONTROLLER_NAME = 'zfcuser';
-
+    // TODO das 2. Password soll in der SESSION gespeichert werden und über den SOAP Header abgefragt werden
+    // Dieser 2. password soll automatisch für die aktuelle session generiert und in der DB beim Anmelden gespeichert werden
+    
+    // TODO Ablauf:
     /**
-     *
-     * @var UserService
+     * auf die Seite gekommen egal wohin : => Wilkommen, Login => Authentifizierung => index
+     * Register: Daten speichern => Login
+     * Eingeloggt: => index
+     * .....
      */
-    protected $userService;
+    
+    // TODO DB User Spalten: HeaderPassword, Eingeloggt_bis
+    
+    // TODO zunächst vielleicht nur normalle Authentifizierung PW + 2.PW Danach auf ZFC umsteigen...
+    
+    
+    const ROUTE_LOGIN = 'client/login';
+    const ROUTE_REGISTER = 'client/register';
+    const CONTROLLER_NAME = 'client';
 
     /**
      *
@@ -40,27 +48,12 @@ class ClientController extends AbstractActionController
      * @var Form
      */
     protected $registerForm;
-
-    /**
-     *
-     * @todo Make this dynamic / translation-friendly
-     * @var string
-     */
-    protected $failedLoginMessage = 'Authentication failed. Please try again.';
-
-    /**
-     *
-     * @var UserControllerOptionsInterface
-     */
-    protected $options;
     
-    // public function __construct($userService, $options, $registerForm, $loginForm)
-    // {
-    // $this->userService = $userService;
-    // $this->options = $options;
-    // $this->registerForm = $registerForm;
-    // $this->loginForm = $loginForm;
-    // }
+    public function __construct()
+    {
+
+    }
+    
     /**
      * Einstiegsfunktion des Soap-Clients.
      * (non-PHPdoc)
@@ -69,39 +62,23 @@ class ClientController extends AbstractActionController
      */
     public function indexAction()
     {
-        $sconfig = $this->getServiceLocator()->get('Config')['ServerConfig'];
-        $options = array(
-            'compression' => SOAP_COMPRESSION_ACCEPT,
-            'cache_wsdl' => 0,
-            'soap_version' => SOAP_1_2
-        );
+//         if (!$this->userAuthentication) {
+//             return $this->redirect()->toRoute(static::ROUTE_LOGIN);
+//         }
         
-        $client = new Client($sconfig['wsdl'], $options);
+//         try {
+//             return $this->redirect()->toRoute(static::ROUTE_LOGIN);
+//         } catch (\Exception $e) {
+//                     echo $e->getCode();
+//                     echo $e->getLine();
+//                     echo $e->getMessage();
+//                     echo $e->getTrace();
+//                     echo $e->__toString();
+//         }
         
-        // TODO das 2. Password soll in der SESSION gespeichert werden und über den SOAP Header abgefragt werden
-        // Dieser 2. password soll automatisch für die aktuelle session generiert und in der DB beim Anmelden gespeichert werden
         
-        // TODO Ablauf:
-        /**
-         * auf die Seite gekommen egal wohin : => Wilkommen, Login => Authentifizierung => index
-         * Register: Daten speichern => Login
-         * Eingeloggt: => index
-         * .....
-         */
+        $client = self::getZSClient();
         
-        // TODO DB User Spalten: HeaderPassword, Eingeloggt_bis
-        
-        // TODO zunächst vielleicht nur normalle Authentifizierung PW + 2.PW Danach auf ZFC umsteigen...
-        
-        $auth = new \stdClass();
-        $auth->username = 'fake_user';
-        $auth->password = 'fake_pass';
-        $auth_vals = new \SoapVar($auth, SOAP_ENC_OBJECT);
-        $authenticate = new \SoapHeader($sconfig['location'], 'authenticate', array(
-            $auth
-        ), true);
-        
-        $client->addSoapInputHeader($authenticate, false);
         
         try {
             $response = $client->hello();
@@ -164,80 +141,126 @@ class ClientController extends AbstractActionController
         
         return new ViewModel();
     }
-
+    
+    public function groupsAction()
+    {
+        if (!$this->userAuthentication) {
+            return $this->redirect()->toRoute(static::ROUTE_LOGIN);
+        }
+    
+        $client = self::getZSClient();
+    
+    
+        try {
+            $response = $client->hello();
+    
+            echo $response;
+        } catch (\SoapFault $e) {
+    
+            if ($e->getMessage() == 401) {
+                echo "falsche LogIn Daten!!!";
+            }
+        } catch (\Exception $e) {
+            echo "Es ist ein fehler auf der Webseite aufgetreten.";
+        }
+    
+        return new ViewModel();
+    }
+    
+    /**
+     * Login form
+     */
     public function loginAction()
     {
-        echo "test1 </br>";
+        if ($this->userAuthentication) {
+            return $this->redirect()->toRoute(static::CONTROLLER_NAME);
+        }
+
+        return $this->forward()->dispatch(static::CONTROLLER_NAME, array('action' => 'authenticate'));
+    }
+    
+    /**
+     * Logout and clear the identity
+     */
+    public function logoutAction()
+    {
+        if ($this->userAuthentication) {
+            $this->userAuthentication = false;
+            return $this->redirect()->toRoute(static::ROUTE_LOGIN);
+        }
         
         return new ViewModel();
     }
-
+    
+    /**
+     * General-purpose authentication action
+     */
+    public function authenticateAction()
+    {
+        if ($this->userAuthentication) {
+            return $this->redirect()->toRoute(static::CONTROLLER_NAME);
+        }
+        
+        $client = $this->getZSClient(false);
+        $client->resetSoapInputHeaders();
+        
+        $auth = new \stdClass();
+        $auth->username = 'fake_user';
+        $auth->password = 'fake_pass';
+        
+        $response = $client->login($auth);
+        
+        if ($response){
+            return $this->redirect()->toRoute(static::CONTROLLER_NAME);
+        }else{
+            return $this->redirect()->toRoute(static::ROUTE_LOGIN);
+            
+//             return $this->forward()->dispatch(static::CONTROLLER_NAME, 
+//                                                 array('action'      => 'login',
+//                                                     'redirect_from' => 'authenticate'
+//                                                     )
+//                                                 );
+        }
+    }
+    
+    /**
+     * Register new user
+     */
     public function registerAction()
     {
-        // if the user is logged in, we don't need to register
-        if ($this->zfcUserAuthentication()->hasIdentity()) {
-            // redirect to the login redirect route
-            return $this->redirect()->toRoute($this->options->getLoginRedirectRoute());
-        }
-        // if registration is disabled
-        if (! $this->options->getEnableRegistration()) {
-            return array(
-                'enableRegistration' => false
-            );
-        }
         
-        $request = $this->getRequest();
-        $service = $this->userService;
-        $form = $this->registerForm;
+        return new ViewModel();
+    }
+    
+    /**
+     * 
+     * @return \Zend\Soap\Client
+     */
+    protected function getZSClient($withHeader = true) {
         
-        if ($this->options->getUseRedirectParameterIfPresent() && $request->getQuery()->get('redirect')) {
-            $redirect = $request->getQuery()->get('redirect');
-        } else {
-            $redirect = false;
-        }
+        $sconfig = $this->getServiceLocator()->get('Config')['ServerConfig'];
+        $options = array(
+            'compression' => SOAP_COMPRESSION_ACCEPT,
+            'cache_wsdl' => 0,
+            'soap_version' => SOAP_1_2
+        );
         
-        $redirectUrl = $this->url()->fromRoute(static::ROUTE_REGISTER) . ($redirect ? '?redirect=' . rawurlencode($redirect) : '');
-        $prg = $this->prg($redirectUrl, true);
+        $client = new Client($sconfig['wsdl'], $options);
         
-        if ($prg instanceof Response) {
-            return $prg;
-        } elseif ($prg === false) {
-            return array(
-                'registerForm' => $form,
-                'enableRegistration' => $this->options->getEnableRegistration(),
-                'redirect' => $redirect
-            );
+        if ($withHeader){
+            $auth = new \stdClass();
+            $auth->username = 'fake_user2';
+            $auth->password = 'fake_pass2';
+            $auth_vals = new \SoapVar($auth, SOAP_ENC_OBJECT);
+            $authenticate = new \SoapHeader($sconfig['location'], 
+                                            'authenticate', 
+                                            array($auth), 
+                                            true
+                                            );
+            
+            $client->addSoapInputHeader($authenticate, false);
         }
         
-        $post = $prg;
-        $user = $service->register($post);
-        
-        $redirect = isset($prg['redirect']) ? $prg['redirect'] : null;
-        
-        if (! $user) {
-            return array(
-                'registerForm' => $form,
-                'enableRegistration' => $this->options->getEnableRegistration(),
-                'redirect' => $redirect
-            );
-        }
-        
-        if ($service->getOptions()->getLoginAfterRegistration()) {
-            $identityFields = $service->getOptions()->getAuthIdentityFields();
-            if (in_array('email', $identityFields)) {
-                $post['identity'] = $user->getEmail();
-            } elseif (in_array('username', $identityFields)) {
-                $post['identity'] = $user->getUsername();
-            }
-            $post['credential'] = $post['password'];
-            $request->setPost(new Parameters($post));
-            return $this->forward()->dispatch(static::CONTROLLER_NAME, array(
-                'action' => 'authenticate'
-            ));
-        }
-        
-        // TODO: Add the redirect parameter here...
-        return $this->redirect()->toUrl($this->url()
-            ->fromRoute(static::ROUTE_LOGIN) . ($redirect ? '?redirect=' . rawurlencode($redirect) : ''));
+        return $client;
     }
 }

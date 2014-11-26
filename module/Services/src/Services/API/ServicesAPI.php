@@ -7,10 +7,15 @@
 namespace Services\API;
 
 use Services\Model\Group;
+use Services\Model\GroupTable;
 
 
 class ServicesAPI
 {
+    /**
+     * 
+     * @var GroupTable
+     */
     protected $groupTable;
     
     /**
@@ -19,6 +24,9 @@ class ServicesAPI
      */
     protected $group;
     
+    /**
+     * 
+     */
     public function __construct() {
 
 //     public function __construct(Adapter $adapter) {
@@ -27,8 +35,9 @@ class ServicesAPI
 
     /**
      * 
-     * @param object $login
-     * @throws SOAPFault
+     * @param \stdClass $login
+     * @throws \SoapFault
+     * @throws \SOAPFault
      * @return string
      */
     public function authenticate($login)
@@ -39,7 +48,7 @@ class ServicesAPI
     
             $autentificatedUser = false;
             
-            if ($login->username === 'fake_user' && $login->password === 'fake_pass') {
+            if ($login->username === 'fake_user2' && $login->password === 'fake_pass2') {
                 $autentificatedUser = true;
             }
 
@@ -49,13 +58,50 @@ class ServicesAPI
                  
             } else {
                  
-                throw new \SoapFault("Incorrect username and or password.", 401);
+                throw new \SoapFault("Incorrect username and or password.", 904);
                  
             }
              
         } else {
              
-            throw new \SOAPFault("Invalid username and password format. Values may not be empty and are case-sensitive.", 401);
+            throw new \SOAPFault("Invalid username and password format. Values may not be empty and are case-sensitive.", 903);
+    
+        }
+         
+    }
+    
+    /**
+     * 
+     * @param \stdClass $login
+     * @throws \SoapFault
+     * @throws \SOAPFault
+     * @return boolean
+     */
+    public function login($login)
+    {
+        if(!empty($login->username) && !empty($login->password)) {
+    
+            //add your own auth code here. I have it check against a database table and return a value if found.
+    
+            $autentificatedUser = false;
+    
+            if ($login->username === 'fake_user' && $login->password === 'fake_pass') {
+                $autentificatedUser = true;
+            }
+    
+            if($autentificatedUser) {
+                 
+                return true;
+                 
+            } else {
+                 
+                throw new \SoapFault("Incorrect username and or password.", 902);
+                 
+            }
+             
+        } else {
+             
+            throw new \SOAPFault("Invalid username and password format. Values may not be empty and are case-sensitive.", 901);
     
         }
          
@@ -63,7 +109,7 @@ class ServicesAPI
     
     /**
      * Liefert eine Gruppen Tabelle zurück //TODO hier als rückgabe die Klasse
-     * @return Group
+     * @return \Services\Model\Group
      */
     public function getGTable()
     {

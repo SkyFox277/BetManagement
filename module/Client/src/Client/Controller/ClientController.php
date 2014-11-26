@@ -83,13 +83,15 @@ class ClientController extends AbstractActionController
         
         // TODO Ablauf:
         /**
-         * auf die Seite gekommen egal wohin : => Wilkommen, Login
+         * auf die Seite gekommen egal wohin : => Wilkommen, Login => Authentifizierung => index
          * Register: Daten speichern => Login
-         * Eingeloggt: => Übersichtseite
+         * Eingeloggt: => index
          * .....
          */
         
         // TODO DB User Spalten: HeaderPassword, Eingeloggt_bis
+        
+        // TODO zunächst vielleicht nur normalle Authentifizierung PW + 2.PW Danach auf ZFC umsteigen...
         
         $auth = new \stdClass();
         $auth->username = 'fake_user';

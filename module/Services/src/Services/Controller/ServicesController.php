@@ -66,7 +66,7 @@ class ServicesController extends AbstractActionController
 
 		if(isset($_GET['wsdl'])) {
 		    
-			//Logindaten prüfen.
+			//Logindaten prï¿½fen.
 			//$Auth = new \Authentification('adm','pwd');
 			//$Auth = new \Authentification('adm', 'pwd');	
 			
@@ -104,13 +104,28 @@ class ServicesController extends AbstractActionController
 			$soap = new Server($this->sconfig['wsdl'], $options);
 			$soap->setClass($api);
 			
-// 			print_r($soap->getOptions());
-			$soap->handle();
+			print_r($soap->getLastRequest());
+// 			$soap->handle();
 
 			//return new ViewModel(array(
 			//		'groupen' => $this->getGroupTable()->fetchAll(),
 			//));
+			
+			
+// 			//--------------Zusatzinfos-----------------
+// 			// Get a response as a return value of handle() method
+// 			// instead of emitting it to the standard output
+// 			$server->setReturnResponse(true);
+// 			...
+// 			$response = $server->handle();
+// 			if ($response instanceof \SoapFault) {
+// 			    ...
+// 			} else {
+// 			    ...
+// 			}
 	
+// 			// oder
+// 			$response = $server->getLastResponse();
 		}
 		return $this->getResponse();
 	}

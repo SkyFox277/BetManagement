@@ -20,7 +20,7 @@
  
 return array(
     'db' => array(
-        'username' => 'root',
-        'password' => '',
+        'username' => 'betmanager',
+        'password' => '72SQvCV2fdWzB9tV',
     ),  
 );

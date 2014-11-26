@@ -19,8 +19,8 @@
  
 return array(
     'ServerConfig'  =>  array(
-        'uri'       =>  'http://xxxx/services',
-        'location'  =>  'http://xxxx/services',
-        'wsdl'      =>  'http://xxxx/services?wsdl',
+        'uri'       =>  'http://localhost/services',
+        'location'  =>  'http://localhost/services',
+        'wsdl'      =>  'http://localhost/services?wsdl',
     )
 );

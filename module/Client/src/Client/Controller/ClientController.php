@@ -13,6 +13,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Soap\Client;
 use Zend\View\Model\ViewModel;
 use Services\Model\Group;
+use Zend\Form\Annotation\Object;
 
 
 class ClientController extends AbstractActionController
@@ -69,48 +70,73 @@ class ClientController extends AbstractActionController
         				'password' => 'Skyfox'
         );
         
+        
         echo "client </br>";
-        echo $sconfig['wsdl'];
      	$client = new Client($sconfig['wsdl'], $options);
 
-     	echo  $client->getClassmap();
-     	echo "<br>----------------+++------";
-     	echo $client->hello();
-        echo "<br>" . $client->md5Value("qwea");
+     	
+
+     	$ns   = "Services\API";
+     	
+     	$auth = new \stdClass();
+     	$auth->username = 'fake_user';
+        $auth->password = 'fake_pass';
+
+        $auth_vals    = new \SoapVar($auth, SOAP_ENC_OBJECT);
+
+        //The 2nd variable, 'authenticate' is a method that exists inside of the SOAP service (you must create it, see next example)
+        $authenticate = new \SoapHeader($sconfig['location'],'authenticate',$auth, true);
+
+        
+        $client->addSoapInputHeader($authenticate, false);
+        echo $client->hello();
+        
+             	        echo "<pre>";
+             	        var_dump($client->getLastRequest());
+             	        echo "</pre>";
+             	        
+             	        echo "<pre>";
+             	        var_dump($client->getLastRequestHeaders());
+             	        echo "</pre>";
+        
+        //?????????????????????????
+        /**
+         * _preProcessArguments
+         * addSoapInputHeader
+         * setUserAgent
+         */
+        
+        echo $client->hello();
+        
+//      	$res = $client->authenticate($auth_vals);
+     	
+//      	        echo "<pre>";
+//      	        var_dump($res);
+//      	        echo "</pre>";
+     	
+     	echo "<br>----------TESTS------------";
+//      	echo  $client->getClassmap();
+
                
-        echo "<br>" .$client->signin();
+//         echo "<br>" .$client->signin();
         
+        
+        // Tests------------------------
         echo "<br>";
-        $result = $client->getGTable();
-        
-        echo "<pre>";
-        var_dump($result);
-        echo "</pre>";
-        
-        echo "<br>----------------------";
-        echo "<br>";
-        echo $client->getLastRequest();
-        echo "<br>----------------------";
-        echo "<br>"; 
-        echo $client->getLastResponse();
-        echo "<br>----------------------";
+        //$result = $client->getGTable();
         
 //         echo "<pre>";
 //         var_dump($result);
 //         echo "</pre>";
-//         return $this->response;
-
         
-        $data = array('id'          => 6,
-            'voicetag'      => 'DE',
-            'groupname'     => 'test3',
-            'isactive'      => 1
-        );
+        echo "<br>----------------------";
+        echo "<br>";
+//         echo $client->getLastRequest();
+        echo "<br>----------------------";
+        echo "<br>"; 
+//         echo $client->getLastResponse();
+        echo "<br>----------------------";
         
-        $group = new Group($data);
-        echo "<pre>";
-        var_dump($group);
-        echo "</pre>";
 
         return new ViewModel();
     }

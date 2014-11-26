@@ -26,6 +26,36 @@ class ServicesAPI
     }
 
     /**
+     * 
+     * @param object $login
+     * @throws SOAPFault
+     * @return string
+     */
+    public function authenticate($login)
+    {
+        if(!empty($login->username) && !empty($login->password)) {
+            
+            //add your own auth code here. I have it check against a database table and return a value if found.
+    
+            if(true) {
+                 
+                return $login->username;
+                 
+            } else {
+                 
+                throw new \SoapFault("Incorrect username and or password.", 401);
+                 
+            }
+             
+        } else {
+             
+            throw new \SOAPFault("Invalid username and password format. Values may not be empty and are case-sensitive.", 401);
+    
+        }
+         
+    }
+    
+    /**
      * Liefert eine Gruppen Tabelle zurück //TODO hier als rückgabe die Klasse
      * @return Group
      */

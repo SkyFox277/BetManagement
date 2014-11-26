@@ -104,8 +104,11 @@ class ServicesController extends AbstractActionController
 			$soap = new Server($this->sconfig['wsdl'], $options);
 			$soap->setClass($api);
 			
-			print_r($soap->getLastRequest());
-// 			$soap->handle();
+// 			$soap->setReturnResponse(false);	
+// 			$soap->setDebugMode(true);
+
+			$soap->handle();
+			
 
 			//return new ViewModel(array(
 			//		'groupen' => $this->getGroupTable()->fetchAll(),

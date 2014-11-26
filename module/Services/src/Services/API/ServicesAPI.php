@@ -37,7 +37,13 @@ class ServicesAPI
             
             //add your own auth code here. I have it check against a database table and return a value if found.
     
-            if(true) {
+            $autentificatedUser = false;
+            
+            if ($login->username === 'fake_user' && $login->password === 'fake_pass') {
+                $autentificatedUser = true;
+            }
+
+            if($autentificatedUser) {
                  
                 return $login->username;
                  

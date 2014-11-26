@@ -66,8 +66,6 @@ class ClientController extends AbstractActionController
         $options = array('compression'  => SOAP_COMPRESSION_ACCEPT,
                         'cache_wsdl'    => 0,
                         'soap_version'  => SOAP_1_2,
-        				'login' => 'Cazzador',
-        				'password' => 'Skyfox'
         );
         
         
@@ -85,20 +83,44 @@ class ClientController extends AbstractActionController
         $auth_vals    = new \SoapVar($auth, SOAP_ENC_OBJECT);
 
         //The 2nd variable, 'authenticate' is a method that exists inside of the SOAP service (you must create it, see next example)
-        $authenticate = new \SoapHeader($sconfig['location'],'authenticate',$auth, true);
+        $authenticate = new \SoapHeader($ns,'authenticate',array($auth), true);
 
         
         $client->addSoapInputHeader($authenticate, false);
-        echo $client->hello();
         
-             	        echo "<pre>";
-             	        var_dump($client->getLastRequest());
-             	        echo "</pre>";
+        
+        
+        try {
+            $response = $client->hello();
+            
+            echo $response;
+        }
+        catch(\SoapFault $e){
+            
+            if ($e->getMessage() == 401){
+                echo "falsche LogIn Daten!!!";
+            }
+
+        }
+        catch(\Exception $e){
+            echo "Es ist ein fehler auf der Webseite aufgetreten.";
+        }
+        
+//              	        echo "<pre>";
+//              	        var_dump($client->getLastRequest());
+//              	        echo "</pre>";
              	        
-             	        echo "<pre>";
-             	        var_dump($client->getLastRequestHeaders());
-             	        echo "</pre>";
+//              	        echo "<pre>";
+//              	        var_dump($client->getLastRequestHeaders());
+//              	        echo "</pre>";
         
+//              	        echo "<pre>";
+//              	        var_dump($client->getLastResponse());
+//              	        echo "</pre>";
+             	        
+//              	        echo "<pre>";
+//              	        var_dump($client->getLastResponseHeaders());
+//              	        echo "</pre>";
         //?????????????????????????
         /**
          * _preProcessArguments
@@ -106,7 +128,6 @@ class ClientController extends AbstractActionController
          * setUserAgent
          */
         
-        echo $client->hello();
         
 //      	$res = $client->authenticate($auth_vals);
      	
@@ -116,19 +137,13 @@ class ClientController extends AbstractActionController
      	
      	echo "<br>----------TESTS------------";
 //      	echo  $client->getClassmap();
-
                
 //         echo "<br>" .$client->signin();
-        
-        
+                
         // Tests------------------------
         echo "<br>";
         //$result = $client->getGTable();
-        
-//         echo "<pre>";
-//         var_dump($result);
-//         echo "</pre>";
-        
+                
         echo "<br>----------------------";
         echo "<br>";
 //         echo $client->getLastRequest();

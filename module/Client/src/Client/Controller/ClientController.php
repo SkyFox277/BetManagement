@@ -19,6 +19,9 @@ class ClientController extends AbstractActionController
 
     // TODO das 2. Password soll in der SESSION gespeichert werden und über den SOAP Header abgefragt werden
     // Dieser 2. password soll automatisch für die aktuelle session generiert und in der DB beim Anmelden gespeichert werden
+    // Oder vielleicht nicht das 2. Passwort sondern eine Session erzeugen die vom Server kontroliert wird
+    // und bei weiterern abfragen mit gegeben wird im Header (kommt auf das gleiche raus)
+    // auf jeden Fall 2-stufig
     
     // TODO Ablauf:
     /**
@@ -31,6 +34,7 @@ class ClientController extends AbstractActionController
     // TODO DB User Spalten: HeaderPassword, Eingeloggt_bis
     
     // TODO zunächst vielleicht nur normalle Authentifizierung PW + 2.PW Danach auf ZFC umsteigen...
+    // als erstes einfach nur ein HASH des Pasworts mitgeben danach auf Sessions umsteigen...
     
     
     const ROUTE_LOGIN = 'client/login';
@@ -63,11 +67,17 @@ class ClientController extends AbstractActionController
     public function indexAction()
     {
 //         if (!$this->userAuthentication) {
-//             return $this->redirect()->toRoute(static::ROUTE_LOGIN);
+//             return $this->redirect()->toRoute('client');
 //         }
         
 //         try {
-//             return $this->redirect()->toRoute(static::ROUTE_LOGIN);
+//              $rresp = $this->redirect()->toRoute('client',array('action'=>'login'));
+//         echo  $this->url('client/login');
+//                      echo "<pre>";
+//                      var_dump($rresp);
+//                      echo "</pre>";
+
+
 //         } catch (\Exception $e) {
 //                     echo $e->getCode();
 //                     echo $e->getLine();
@@ -84,11 +94,23 @@ class ClientController extends AbstractActionController
             $response = $client->hello();
             
             echo $response;
+            
         } catch (\SoapFault $e) {
             
-            if ($e->getMessage() == 401) {
-                echo "falsche LogIn Daten!!!";
+            switch ($e->getMessage()) {
+                case 903:
+                    echo "zum Einlogen Name und Passwort eingeben";
+                    break;
+                    
+                case 904:
+                    echo "falsche LogIn Daten!!!";
+                    break;
+                    
+                default:
+                    echo "SOAPFault es ist etwas schiefgelaufen";
+                    break;
             }
+
         } catch (\Exception $e) {
             echo "Es ist ein fehler auf der Webseite aufgetreten.";
         }
@@ -99,9 +121,7 @@ class ClientController extends AbstractActionController
          *
          * setUserAgent
          */
-        
-//         $res = $client->authenticate($auth_vals);
-        
+
 //         echo "<pre>";
 //         var_dump($res);
 //         echo "</pre>";
@@ -173,9 +193,9 @@ class ClientController extends AbstractActionController
     public function loginAction()
     {
         if ($this->userAuthentication) {
-            return $this->redirect()->toRoute(static::CONTROLLER_NAME);
+            $this->redirect()->toRoute('client');
         }
-
+//         $this->redirect()->toRoute('client', array('action'=>'authenticate'));
         return $this->forward()->dispatch(static::CONTROLLER_NAME, array('action' => 'authenticate'));
     }
     
@@ -186,7 +206,7 @@ class ClientController extends AbstractActionController
     {
         if ($this->userAuthentication) {
             $this->userAuthentication = false;
-            return $this->redirect()->toRoute(static::ROUTE_LOGIN);
+            $this->redirect()->toRoute('home');
         }
         
         return new ViewModel();
@@ -195,7 +215,7 @@ class ClientController extends AbstractActionController
     /**
      * General-purpose authentication action
      */
-    public function authenticateAction()
+    public function authentificateAction()
     {
         if ($this->userAuthentication) {
             return $this->redirect()->toRoute(static::CONTROLLER_NAME);
@@ -229,6 +249,12 @@ class ClientController extends AbstractActionController
     public function registerAction()
     {
         
+        return new ViewModel();
+    }
+    
+    public function homeAction()
+    {
+    
         return new ViewModel();
     }
     

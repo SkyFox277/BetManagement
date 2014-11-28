@@ -7,6 +7,9 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
+
+
+
 return array(
     'router' => array(
         'routes' => array(
@@ -15,19 +18,19 @@ return array(
                 'options' => array(
                     'route'    => '/',
                     'defaults' => array(
-                        'controller' => 'Client\Controller\Client',
-                        'action'     => 'index',
+                        '__NAMESPACE__' => 'Client\Controller',
+                        'controller'    => 'Client',
+                        'action'        => 'home',
                     ),
                 ),
             ),
-            // The following is a route to simplify getting started creating
-            // new controllers and actions without needing to create a new
-            // module. Simply drop new controllers in, and you can access them
-            // using the path /application/:controller/:action
             'client' => array(
-                'type'    => 'Literal',
+                'type'    => 'Segment',
                 'options' => array(
-                    'route'    => '/client',
+                    'route'    => '/client[/:action]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        ),
                     'defaults' => array(
                         '__NAMESPACE__' => 'Client\Controller',
                         'controller'    => 'Client',
@@ -36,14 +39,39 @@ return array(
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
-                    'default' => array(
-                        'type'    => 'Segment',
+                    'register' => array(
+                        'type'    => 'literal',
                         'options' => array(
-                            'route'    => '/[:action]',
-                            'constraints' => array(
-                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-                            ),
+                            'route'    => '/register',
                             'defaults' => array(
+                                'action'        => 'register',
+                            ),
+                        ),
+                    ),
+                    'login' => array(
+                        'type'    => 'literal',
+                        'options' => array(
+                            'route'    => '/login',
+                            'defaults' => array(
+                                'action'        => 'login',
+                            ),
+                        ),
+                    ),
+                    'logout' => array(
+                        'type'    => 'literal',
+                        'options' => array(
+                            'route'    => '/logout',
+                            'defaults' => array(
+                                'action'        => 'logout',
+                            ),
+                        ),
+                    ),
+                    'groups' => array(
+                        'type'    => 'literal',
+                        'options' => array(
+                            'route'    => '/groups',
+                            'defaults' => array(
+                                'action'        => 'groups',
                             ),
                         ),
                     ),
@@ -51,6 +79,7 @@ return array(
             ),
         ),
     ),
+
     'service_manager' => array(
         'abstract_factories' => array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',

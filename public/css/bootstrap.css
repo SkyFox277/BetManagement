@@ -4412,7 +4412,8 @@ textarea.input-group-sm > .input-group-btn > .btn {
   overflow-y: auto;
 }
 
-@media (min-width: 768px) {
+//Minimale breite fürs normale menue!!!
+@media (min-width: 1168px) {
   .navbar-collapse {
     width: auto;
     border-top: 0;
